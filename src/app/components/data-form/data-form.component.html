@@ -16,6 +16,7 @@
   </div>
 <div class="col-sm-12">
   <input type="email" class="form-control" formControlName="email" id="email" placeholder="nome@email.com">
+  <app-error-msg [control]="formulario.get('email')" label="Email"></app-error-msg>
 
   <!-- Mensagem de validando -->
   <div *ngIf="formulario.get('email')?.status === 'PENDING'" style="color: blue; margin-top: 5px;">

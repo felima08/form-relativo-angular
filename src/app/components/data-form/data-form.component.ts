@@ -11,12 +11,13 @@ import { map } from 'rxjs/operators';
 import { ConsultaCepService } from '../shared/services/consulta-cep.service';
 import { FormValidations } from '../shared/form-validation';
 import { VerificaEmailService } from './services/verifica-email.service';
+import { ErrorMsgComponent } from '../shared/error-msg/error-msg.component';
 
 
 
 @Component({
   selector: 'app-data-form',
-  imports: [ReactiveFormsModule, FormDebugComponent,CommonModule],
+  imports: [ReactiveFormsModule, FormDebugComponent,CommonModule,ErrorMsgComponent],
   templateUrl: './data-form.component.html',
   styleUrl: './data-form.component.css',
   standalone: true
