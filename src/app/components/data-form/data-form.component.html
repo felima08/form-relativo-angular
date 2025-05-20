@@ -14,15 +14,23 @@
   <div class="col-sm-12">
     <label for="email" class="control-form">Email</label>
   </div>
-  <div class="col-sm-12">
-    <input type="email" class="form-control" formControlName="email" id="email" placeholder="nome@email.com">
-    <div 
-      *ngIf="formulario.get('email')?.invalid && formulario.get('email')?.touched"
-      style="background: #ffdddd; color: #b71c1c; padding: 8px; border-radius: 4px; margin-top: 5px;">
-      <span *ngIf="formulario.get('email')?.errors?.['required']">O email é obrigatório.</span>
-      <span *ngIf="formulario.get('email')?.errors?.['pattern']">Formato de email inválido.</span>
-    </div>
+<div class="col-sm-12">
+  <input type="email" class="form-control" formControlName="email" id="email" placeholder="nome@email.com">
+
+  <!-- Mensagem de validando -->
+  <div *ngIf="formulario.get('email')?.status === 'PENDING'" style="color: blue; margin-top: 5px;">
+    Validando email...
   </div>
+
+  <!-- Mensagens de erro -->
+  <div 
+    *ngIf="formulario.get('email')?.invalid && formulario.get('email')?.touched"
+    style="background: #ffdddd; color: #b71c1c; padding: 8px; border-radius: 4px; margin-top: 5px;">
+    <span *ngIf="formulario.get('email')?.errors?.['required']">O email é obrigatório.</span>
+    <span *ngIf="formulario.get('email')?.errors?.['pattern']">Formato de email inválido.</span>
+    <span *ngIf="formulario.get('email')?.errors?.['emailInvalido']">Email já cadastrado.</span>
+  </div>
+</div>
 </div>
 
   <div class="form-group">
@@ -34,6 +42,7 @@
     <div 
   *ngIf="formulario.get('confirmarEmail')?.invalid && formulario.get('confirmarEmail')?.touched"
   style="background: #ffdddd; color: #b71c1c; padding: 8px; border-radius: 4px; margin-top: 5px;">
+  <span *ngIf="formulario.get('confirmarEmail')?.errors?.['required']">O email é obrigatório.</span>
   <span *ngIf="formulario.get('confirmarEmail')?.errors?.['equalsTo']">Os emails não coincidem.</span>
 </div>
     </div>

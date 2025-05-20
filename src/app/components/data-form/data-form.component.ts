@@ -28,6 +28,7 @@ export class DataFormComponent implements OnInit {
   cargos!: any[]; 
   tecnologias!: any[];
   newsletterOp: any[] = [];
+  
 
   frameworks = ['Angular', 'React', 'VueJS'];
   
@@ -50,9 +51,12 @@ this.tecnologias = this.dropdownService.getTecnologias();
 
 this.newsletterOp = this.dropdownService.getNewsletter();
 
+this.verificaEmailService.verificarEmail('').subscribe();
+
+
     this.formulario = this.formBuilder.group({
       nome: [null, [Validators.required,Validators.minLength(4),Validators.maxLength(50)]],
-      email: [null, [Validators.required,Validators.pattern("[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?")]],
+      email: [null, [Validators.required,Validators.pattern("[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?")],[this.validarEmail.bind(this)]],
       confirmarEmail: [null, [Validators.required,FormValidations.equalsTO('email')]],
      
       endereco:this.formBuilder.group({
@@ -156,6 +160,13 @@ compararCargos(obj1: any,obj2: any){
 
 setarTecnologias(){
   this.formulario.get('tecnologias')?.setValue(['Java','typescript']); 
+}
+
+validarEmail(formControl: FormControl) {
+  return this.verificaEmailService.verificarEmail(formControl.value)
+    .pipe(
+      map((emailExistente: any) => (emailExistente ? { emailInvalido: true } : null))
+    );
 }
 
 
