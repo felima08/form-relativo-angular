@@ -7,7 +7,10 @@ import { CommonModule } from '@angular/common';
 import { DropdownService } from '../shared/services/dropdown.service';
 import { EstadoBr } from '../shared/models/estado-br.model';
 import { of } from 'rxjs';
+import { map } from 'rxjs/operators';
 import { ConsultaCepService } from '../shared/services/consulta-cep.service';
+import { FormValidations } from '../shared/form-validation';
+import { VerificaEmailService } from './services/verifica-email.service';
 
 
 
@@ -21,6 +24,7 @@ import { ConsultaCepService } from '../shared/services/consulta-cep.service';
 export class DataFormComponent implements OnInit {
   formulario!: FormGroup;
   estados!: EstadoBr[];
+  cidades!: any[];
   cargos!: any[]; 
   tecnologias!: any[];
   newsletterOp: any[] = [];
@@ -32,6 +36,7 @@ export class DataFormComponent implements OnInit {
     private http: HttpClient,
     private dropdownService: DropdownService,
     private cepService: ConsultaCepService,
+    private verificaEmailService: VerificaEmailService
   ) {}
 
   ngOnInit() {
@@ -46,50 +51,45 @@ this.tecnologias = this.dropdownService.getTecnologias();
 this.newsletterOp = this.dropdownService.getNewsletter();
 
     this.formulario = this.formBuilder.group({
-      nome: [null, [Validators.required,Validators.minLength(4),Validators.maxLength(10)]],
+      nome: [null, [Validators.required,Validators.minLength(4),Validators.maxLength(50)]],
       email: [null, [Validators.required,Validators.pattern("[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?")]],
+      confirmarEmail: [null, [Validators.required,FormValidations.equalsTO('email')]],
+     
       endereco:this.formBuilder.group({
-        cep:[null,Validators.required],
-     numero:[null,Validators.required],
+        cep:[null,[Validators.required,FormValidations.cepValidator]],
+     numero:[null,Validators.required ],
      complemento:[null],
      rua:[null,Validators.required],
      bairro:[null,Validators.required],
-     cidade:[null,Validators.required],
+     cidade:[null,],
      estado:[null,Validators.required],
       }),
-      cargo: [null],
-      tecnologias: [null],
+      cargo: [null, Validators.required],
+      tecnologias: [null, Validators.required],
       newsletter: [null],
      termos: [false, Validators.requiredTrue],
-      frameworks: this.buildFrameworks()
-     
+   frameworks: this.formBuilder.array(
+  this.buildFrameworks(),
+  FormValidations.requiredMinCheckbox(1)
+)
     });
     
   }
 
 buildFrameworks() {
-  const values = this.frameworks.map(v => new FormControl(false));
-  return this.formBuilder.array(values, this.requiredMinCheckbox(1));
+  return this.frameworks.map(() => new FormControl(false));
 }
 
-requiredMinCheckbox(min = 1) {
- const validator = (control: AbstractControl) => {
-   const formArray = control as FormArray;
-      const totalChecked = formArray.controls
-      .map((v: any) => v.value)
-      .reduce((total: number, v: any) => (v ? total + 1 : total), 0);
-      return totalChecked >= min ? null : { required: true };
-   
-  };
-  return validator
-}
+
 
 
 onSubmit() {
 
+
   let valueSubmit = Object.assign({}, this.formulario.value);
+  const frameworksArray = valueSubmit.frameworks || [];
   valueSubmit = Object.assign(valueSubmit, {
-    frameworks: valueSubmit.frameworks
+    frameworks: frameworksArray 
       .map((v: any, i: number) => (v ? this.frameworks[i] : null))
       .filter((v: any) => v !== null)
   });
@@ -157,6 +157,7 @@ compararCargos(obj1: any,obj2: any){
 setarTecnologias(){
   this.formulario.get('tecnologias')?.setValue(['Java','typescript']); 
 }
+
 
 getFrameworksControls() {
   return (this.formulario.get('frameworks') as FormArray).controls;
