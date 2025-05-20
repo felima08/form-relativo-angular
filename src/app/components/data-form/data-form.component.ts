@@ -126,6 +126,12 @@ Resetar() {
   this.formulario.reset();
 }
 
+verificaValidTouched(campo:string){
+  return (
+    !this.formulario.get(campo).valid &&
+    (this.formulario.get(campo).touched || this.formulario.get(campo).dirty)
+  );
+}
 
 
 consultaCEP() {

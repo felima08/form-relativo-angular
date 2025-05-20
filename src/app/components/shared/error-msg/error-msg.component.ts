@@ -1,5 +1,5 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { FormControl } from '@angular/forms';
+import { AbstractControl, FormControl } from '@angular/forms';
 
 
 @Component({
@@ -9,8 +9,8 @@ import { FormControl } from '@angular/forms';
 })
 export class ErrorMsgComponent implements OnInit {
 
-  @Input() msgErro!: string;
-  @Input() mostrarErro!: boolean;
+  @Input() control!: AbstractControl | null;
+  @Input() mlabel!: string;
 
   
 
