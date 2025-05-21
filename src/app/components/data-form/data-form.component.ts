@@ -6,12 +6,14 @@ import { HttpClient } from '@angular/common/http';
 import { CommonModule } from '@angular/common';
 import { DropdownService } from '../shared/services/dropdown.service';
 import { EstadoBr } from '../shared/models/estado-br.model';
-import { of } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { asyncScheduler, of, scheduled } from 'rxjs';
+import { distinctUntilChanged, map,tap } from 'rxjs/operators';
 import { ConsultaCepService } from '../shared/services/consulta-cep.service';
 import { FormValidations } from '../shared/form-validation';
 import { VerificaEmailService } from './services/verifica-email.service';
 import { ErrorMsgComponent } from '../shared/error-msg/error-msg.component';
+import { switchMap } from 'rxjs/operators';
+import { InputFieldComponent } from '../shared/input-field/input-field.component';
 
 
 
@@ -75,10 +77,20 @@ this.verificaEmailService.verificarEmail('').subscribe();
      termos: [false, Validators.requiredTrue],
    frameworks: this.formBuilder.array(
   this.buildFrameworks(),
-  FormValidations.requiredMinCheckbox(1)
-)
+  FormValidations.requiredMinCheckbox(1))
     });
-    
+
+
+    this.formulario.get('endereco.cep')?.statusChanges
+    .pipe(
+      distinctUntilChanged(),
+     tap(value => console.log('status Cep', value)),
+     switchMap(status => status === 'VALID' ?
+      this.cepService!.consultaCEP(this.formulario.get('endereco.cep')?.value)
+      : scheduled(of(null),asyncScheduler)
+     )
+    )
+    .subscribe(dados => dados ? this.populaDadosForm(dados) : {});
   }
 
 buildFrameworks() {
