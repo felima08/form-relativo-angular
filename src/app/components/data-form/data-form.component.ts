@@ -56,7 +56,7 @@ this.verificaEmailService.verificarEmail('').subscribe();
 
 
     this.formulario = this.formBuilder.group({
-      nome: [null, [Validators.required,Validators.minLength(4),Validators.maxLength(50)]],
+      nome: [null, [Validators.required,Validators.minLength(4),Validators.maxLength(20)]],
       email: [null, [Validators.required,Validators.pattern("[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?")],[this.validarEmail.bind(this)]],
       confirmarEmail: [null, [Validators.required,FormValidations.equalsTO('email')]],
      
@@ -126,12 +126,7 @@ Resetar() {
   this.formulario.reset();
 }
 
-verificaValidTouched(campo:string){
-  return (
-    !this.formulario.get(campo).valid &&
-    (this.formulario.get(campo).touched || this.formulario.get(campo).dirty)
-  );
-}
+
 
 
 consultaCEP() {
@@ -153,7 +148,9 @@ consultaCEP() {
       }
     });
     
-    this.formulario.get('nome')?.setValue('Felipe');
+    this.formulario.get('nome')?.setValue('Felipe Gonçalves');
+    this.formulario.get('email')?.setValue('soares@gmail.com');
+    this.formulario.get('confirmarEmail')?.setValue('soares@gmail.com');
     
   }
   
