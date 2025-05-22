@@ -1,35 +1,59 @@
-import { Component, OnInit, Directive } from '@angular/core';
-import { FormGroup, FormArray } from '@angular/forms';
+import { Directive, OnInit } from '@angular/core';
+import { FormGroup, FormArray, AbstractControl } from '@angular/forms'; 
 
 @Directive()
 export abstract class BaseFormComponent implements OnInit {
-  formulario: any;
-
- 
+  formulario!: FormGroup; 
 
   constructor() { }
 
-  ngOnInit() {
-  }
-  
+  ngOnInit() { } 
 
-  verificaValidTouched(campo: string) {
-    return (
-      !this.formulario.get(campo).valid &&
-      (this.formulario.get(campo).touched || this.formulario.get(campo).dirty)
-    );
-  }
+
+  abstract submit(): void; 
 
   
+  onSubmit() {
+    if (this.formulario.valid) {
+      this.submit(); 
+    } else {
+      console.log('Formulário inválido');
+      this.verificaValidacoesForm(this.formulario); 
+    }
+  }
 
- 
+  
+  verificaValidacoesForm(formGroup: FormGroup | FormArray) { 
+    Object.keys(formGroup.controls).forEach(campo => {
+      console.log(campo);
+      const controle = formGroup.get(campo); 
 
-  aplicaCssErro(campo: string) {
+      controle?.markAsDirty(); 
+
+      if (controle instanceof FormGroup || controle instanceof FormArray) {
+        this.verificaValidacoesForm(controle); 
+      }
+    });
+  }
+
+  Resetar() {
+    this.formulario.reset();
+  }
+
+  verificaValidTouched(campo: string): boolean {
+    const control = this.formulario.get(campo);
+    return (control?.invalid && (control?.touched || control?.dirty)) || false;
+  }
+
+  aplicaCssErro(campo: string): { [key: string]: boolean } {
     return {
       'has-error': this.verificaValidTouched(campo),
       'has-feedback': this.verificaValidTouched(campo)
     };
   }
 
-
+  
+  getCampo(campo: string): AbstractControl | null { 
+    return this.formulario.get(campo);
+  }
 }
