@@ -15,6 +15,7 @@ import { ErrorMsgComponent } from '../shared/error-msg/error-msg.component';
 import { switchMap } from 'rxjs/operators';
 import { InputFieldComponent } from '../shared/input-field/input-field.component';
 import { BaseFormComponent } from '../shared/base-form/base-form.component';
+import { EMPTY } from 'rxjs';
 
 @Component({
   selector: 'app-data-form',
@@ -27,7 +28,7 @@ export class DataFormComponent extends BaseFormComponent implements OnInit {
    
 
   estados!: EstadoBr[];
-  cidades!: any[];
+  cidades: any[] = [];
   cargos!: any[];
   tecnologias!: any[];
   newsletterOp: any[] = [];
@@ -93,11 +94,27 @@ export class DataFormComponent extends BaseFormComponent implements OnInit {
       )
       .subscribe(dados => dados ? this.populaDadosForm(dados) : {});
 
-    this.formulario.get('endereco.estado')?.valueChanges
-    .pipe(
-      tap(estado => console.log('Novo estado', estado))
-    )  
-    .subscribe();
+
+this.formulario.get('endereco.estado')?.valueChanges
+  .pipe(
+    tap(estado => {
+      console.log('Novo estado selecionado', estado);
+      this.formulario.get('endereco.cidade')?.setValue(null);
+      this.cidades = [];
+    }),
+    map(estadoSigla => this.estados.find(e => e.sigla === estadoSigla)),
+    map(estadoObj => estadoObj ? estadoObj.id : null),
+    switchMap((estadoId: number | null) => {
+      if (estadoId !== null) {
+        return this.dropdownService.getCidadesBr(estadoId); 
+      } else {
+        return EMPTY;
+      }
+    }),
+    tap(cidades => console.log('DataFormComponent: Cidades recebidas e prontas para atribuição:', cidades))
+  )
+  .subscribe(cidades => this.cidades = cidades);
+    
        //this.dropdownService.getCidadesBr(8).subscribe(console.log);
   }
 
@@ -173,3 +190,5 @@ export class DataFormComponent extends BaseFormComponent implements OnInit {
  
 
 }
+
+

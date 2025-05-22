@@ -78,17 +78,16 @@
          <app-error-msg [control]="formulario.get('endereco.bairro')" label="Bairro"></app-error-msg>
       </div>
 
-      <div class="col-md-5" >
+     <div class="col-md-4" [ngClass]="aplicaCssErro('endereco.cidade')">
         <label for="cidade" class="control-label">Cidade</label>
         <select class="form-control" id="cidade" formControlName="cidade">
-        <option *ngFor="let cidade of cidades" [value]="cidade">{{cidade}}</option>
+          <option *ngFor="let cidade of cidades" [value]="cidade.nome">{{ cidade.nome }}</option>
         </select>
-        <app-error-msg [control]="formulario.get('endereco.cidade')" label="Cidade"></app-error-msg>
+       
       </div>
                 
-    </div>
+    
 
-    <div class="form-group">
       <div class="col-md-8" >
         <label for="estado" class="control-label">Estado</label>
         <select class="form-control" id="estado" formControlName="estado">
@@ -96,9 +95,8 @@
       </select>
         <app-error-msg [control]="formulario.get('endereco.estado')" label="Estado"></app-error-msg>
       </div>
-    </div>
      </div>
-  
+</div>
 
 <div class="form-group" style="display: flex;">
       <div class="col-md-4" >
