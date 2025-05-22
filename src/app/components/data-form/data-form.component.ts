@@ -14,17 +14,21 @@ import { VerificaEmailService } from './services/verifica-email.service';
 import { ErrorMsgComponent } from '../shared/error-msg/error-msg.component';
 import { switchMap } from 'rxjs/operators';
 import { InputFieldComponent } from '../shared/input-field/input-field.component';
+import { BaseFormComponent } from '../shared/base-form/base-form.component';
 
 
 
 @Component({
   selector: 'app-data-form',
-  imports: [ReactiveFormsModule, FormDebugComponent,CommonModule,ErrorMsgComponent],
+  imports: [ReactiveFormsModule, FormDebugComponent, CommonModule, ErrorMsgComponent, InputFieldComponent],
   templateUrl: './data-form.component.html',
   styleUrl: './data-form.component.css',
   standalone: true
 })
 export class DataFormComponent implements OnInit {
+aplicaCssErro(arg0: string): string {
+throw new Error('Method not implemented.');
+}
   formulario!: FormGroup;
   estados!: EstadoBr[];
   cidades!: any[];

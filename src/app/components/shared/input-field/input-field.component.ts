@@ -1,5 +1,5 @@
 import { Component, Input, OnInit, forwardRef } from '@angular/core';
-import { ControlValueAccessor,NG_VALUE_ACCESSOR, FormControl,ReactiveFormsModule } from '@angular/forms';
+import { ControlValueAccessor,NG_VALUE_ACCESSOR, FormControl,ReactiveFormsModule, AbstractControl } from '@angular/forms';
 import { CommonModule } from '@angular/common'; 
 import { ErrorMsgComponent } from '../error-msg/error-msg.component'; 
 
@@ -20,9 +20,11 @@ import { ErrorMsgComponent } from '../error-msg/error-msg.component';
 export class InputFieldComponent{
     
   @Input() classeCss: string = '';
+  @Input() id: string = '';
+  @Input() type = 'text';
   @Input() label: string = '';
   
-  @Input() control!: FormControl; 
+  @Input() control!: AbstractControl | null; 
 
 constructor() {
 

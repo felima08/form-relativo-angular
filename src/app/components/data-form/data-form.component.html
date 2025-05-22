@@ -1,5 +1,11 @@
 <form class="form-horizontal" [formGroup]="formulario" (ngSubmit)="onSubmit()">
 
+<app-input-field class="col-sm-12" formControlName="nome"
+    [classeCss]="aplicaCssErro('nome')"
+    id="nome" label="Nome" [control]="formulario.get('nome')"
+  ></app-input-field>
+
+
   <div class="form-group" >
     <div class="col-sm-12">
       <label for="nome" class="control-label">Nome</label>
@@ -153,6 +159,6 @@
   <button class="btn btn-success" (click)="setarCargo()">Cargo</button>  
   <button class="btn btn-info" (click)="setarTecnologias()">Tecnologias</button> 
 
-  
+
   <app-form-debug [form]="formulario"></app-form-debug>
 </form>
