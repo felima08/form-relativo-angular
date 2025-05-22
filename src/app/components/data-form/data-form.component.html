@@ -2,8 +2,10 @@
 
  <app-input-field class="col-sm-12" formControlName="nome"
    [classeCss]="aplicaCssErro('nome')"
-    id="nome" label="Nome" [control]="formulario.get('nome')"
-  ></app-input-field>
+    id="nome" label="Nome" [control]="formulario.get('nome')">
+    
+    </app-input-field>
+   <app-error-msg [control]="formulario.get('nome')" label="Nome"></app-error-msg>
 
   <!----<div class="form-group" >
     <div class="col-sm-12">
