@@ -2,7 +2,7 @@ import { Component, Input, OnInit, forwardRef } from '@angular/core';
 import { ControlValueAccessor,NG_VALUE_ACCESSOR, FormControl,ReactiveFormsModule, AbstractControl } from '@angular/forms';
 import { CommonModule } from '@angular/common'; 
 import { ErrorMsgComponent } from '../error-msg/error-msg.component'; 
-import { FormsModule } from '@angular/forms';
+
 
 const INPUT_FIELD_VALUE_ACCESSOR: any = {
   provide: NG_VALUE_ACCESSOR,
@@ -19,8 +19,7 @@ const INPUT_FIELD_VALUE_ACCESSOR: any = {
   imports: [
     CommonModule,
     ReactiveFormsModule, 
-    ErrorMsgComponent,
-    FormsModule
+    ErrorMsgComponent
   ]
 })
 export class InputFieldComponent implements ControlValueAccessor {
@@ -34,6 +33,16 @@ export class InputFieldComponent implements ControlValueAccessor {
   
   @Input() isReadOnly: any;
 
+
+
+onInput(event: Event): void {
+  this.value = (event.target as HTMLInputElement).value;
+}
+
+
+onBlur(): void {
+  this.onTouchedCb(''); 
+}
 
 private innerValue: any
 

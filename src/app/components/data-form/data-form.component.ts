@@ -60,7 +60,7 @@ export class DataFormComponent extends BaseFormComponent implements OnInit {
     this.verificaEmailService.verificarEmail('').subscribe();
 
     this.formulario = this.formBuilder.group({
-      nome: [null, [Validators.required, Validators.minLength(4), Validators.maxLength(20)]],
+      nome: [null, [Validators.required, Validators.minLength(8), Validators.maxLength(20)]],
       email: [null, [Validators.required, Validators.pattern("[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?")], [this.validarEmailCustom.bind(this)]], 
       confirmarEmail: [null, [Validators.required, FormValidations.equalsTO('email')]],
 
@@ -92,6 +92,13 @@ export class DataFormComponent extends BaseFormComponent implements OnInit {
         )
       )
       .subscribe(dados => dados ? this.populaDadosForm(dados) : {});
+
+    this.formulario.get('endereco.estado')?.valueChanges
+    .pipe(
+      tap(estado => console.log('Novo estado', estado))
+    )  
+    .subscribe();
+       //this.dropdownService.getCidadesBr(8).subscribe(console.log);
   }
 
   buildFrameworks() {
@@ -162,5 +169,7 @@ export class DataFormComponent extends BaseFormComponent implements OnInit {
   getFrameworksControls() {
     return (this.formulario.get('frameworks') as FormArray).controls;
   }
+
+ 
 
 }

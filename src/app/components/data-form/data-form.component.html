@@ -3,9 +3,8 @@
  <app-input-field class="col-sm-12" formControlName="nome"
    [classeCss]="aplicaCssErro('nome')"
     id="nome" label="Nome" [control]="formulario.get('nome')">
-    
     </app-input-field>
-   <app-error-msg [control]="formulario.get('nome')" label="Nome"></app-error-msg>
+   
 
   <!----<div class="form-group" >
     <div class="col-sm-12">
@@ -134,7 +133,7 @@
       <label class="checkbox-inline">
     <input type ="checkbox" formControlName="termos"> Aceito os termos de uso
     </label>
-    <app-error-msg [control]="formulario.get('termos')" label="Aceito os termos"></app-error-msg>
+    <app-error-msg [control]="formulario.get('termos')" label=" os termos"></app-error-msg>
     </div>
   </div>
 

@@ -44,7 +44,7 @@ static getErrorMsg(fieldName: string, validatorName: string, validatorValue?: an
     const config: { [id: string] : string } = {
       'required': `${fieldName} é obrigatório.`,
       'minlength': `${fieldName} precisa ter no mínimo ${validatorValue.requiredLength} caracteres.`,
-      'maxlength': `${fieldName} precisa ter no máximo ${validatorValue.requiredLength} caracteres.`,
+      'maxlength': `${fieldName} só pode ter no máximo ${validatorValue.requiredLength} caracteres.`,
       'cepInvalido': 'O CEP é inválido.',
       'emailInvalido': 'O e-mail informado já está cadastrado!',
       'equalsTo': 'Os campos precisam ser iguais.',

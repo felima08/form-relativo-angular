@@ -29,6 +29,7 @@ export abstract class BaseFormComponent implements OnInit {
       const controle = formGroup.get(campo); 
 
       controle?.markAsDirty(); 
+      controle?.markAsTouched();
 
       if (controle instanceof FormGroup || controle instanceof FormArray) {
         this.verificaValidacoesForm(controle); 
@@ -45,12 +46,13 @@ export abstract class BaseFormComponent implements OnInit {
     return (control?.invalid && (control?.touched || control?.dirty)) || false;
   }
 
-  aplicaCssErro(campo: string): { [key: string]: boolean } {
-    return {
-      'has-error': this.verificaValidTouched(campo),
-      'has-feedback': this.verificaValidTouched(campo)
-    };
-  }
+ aplicaCssErro(campo: string): { [key: string]: boolean } {
+  const isValidTouched = this.verificaValidTouched(campo);
+  return {
+    'is-invalid': isValidTouched, 
+    'has-feedback': isValidTouched 
+  };
+}
 
   
   getCampo(campo: string): AbstractControl | null { 
